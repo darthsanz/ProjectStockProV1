@@ -1,0 +1,215 @@
+/* Esto obliga a los iconos dentro de botones a estar rectos */
+.btn i {
+  font-style: normal !important;
+}
+
+.btn {
+  border-radius: 8px; /* Bordes más suaves */
+  transition: all 0.2s ease; /* Para que al pasar el mouse se sienta fluido */
+}
+
+.splash-evitado #splash-screen {
+  display: none !important;
+}
+
+#filterGroup::-webkit-scrollbar {
+  display: none;
+}
+
+#filterGroup {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+/*Estilo minimalista inputs*/
+.form-control,
+.form-select,
+.input-group-text {
+  border: 1px solid #e9ecef; /*Borde casi invisible*/
+  transition: all 0.2s ease;
+}
+/*Efecto fe foco azul suave*/
+.form-control:focus {
+  background-color: #fff !important;
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.1);
+  outline: 0;
+}
+/*Quita las flechas del imput number*/
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.form-control.is-invalid:focus,
+.form-select.is-invalid:focus {
+  border-color: #dc3545 !important; /* Rojo Bootstrap */
+  box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25) !important;
+}
+.badge-audit {
+  min-width: 85px;
+  text-align: center;
+  display: inline-block;
+}
+
+@media (min-width: 992px) {
+  /* 1. ESTRUCTURA BASE */
+  html,
+  body {
+    height: 100%;
+    overflow: hidden; /* Adiós scroll de la página completa */
+  }
+
+  #dashboard-container {
+    height: calc(100vh - 60px); /* Altura total menos navbar */
+    padding-bottom: 0px;
+    overflow: hidden;
+  }
+
+  /* 2. ASEGURAR QUE LA FILA Y COLUMNAS LLENEN EL ESPACIO */
+  #dashboard-container > .row {
+    height: 100%;
+  }
+
+  /* Columna Izquierda (Scroll simple) */
+  .col-lg-4 {
+    height: 100%;
+    overflow-y: auto;
+    padding-bottom: 20px;
+  }
+
+  /* Columna Derecha (Estructura Flex Rígida) */
+  .col-lg-8 {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 10px; /* Un respiru al final */
+  }
+
+  /* 3. LA TARJETA CONTENEDORA (card-scroll-container) */
+  /* Esta es la clave: le decimos que crezca para llenar el hueco vacío */
+  .card-scroll-container {
+    flex: 1; /* Ocupa todo el espacio sobrante (Magia Flexbox) */
+    display: flex;
+    flex-direction: column;
+    min-height: 0; /* OBLIGATORIO: Permite que el flex se encoja si es necesario */
+    overflow: hidden; /* Evita que la tarjeta crezca más allá de su contenedor */
+  }
+
+  /* 4. EL ÁREA DE SCROLL (scrollable-content) */
+  /* Aquí es donde activamos el scroll, no en el UL, sino en este DIV */
+  .scrollable-content {
+    flex: 1; /* Ocupa todo el alto disponible dentro de la tarjeta */
+    overflow-y: auto; /* ¡AQUÍ NACE EL SCROLL! */
+    height: 100%;
+    padding-right: 12px; /* Esto empuja el scroll hacia la derecha */
+    padding-left: 2px;
+  }
+}
+
+/* Estilizamos la barra de scroll para que se vea elegante (opcional) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1;
+  border-radius: 20px;
+
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: #94a3b8;
+}
+/* para que el modal abarque toda la pantalla en movil */
+@media (max-width: 576px) {
+  .modal-dialog {
+    margin: 0.5rem;
+    display: flex;
+    align-items: center;
+    min-height: calc(100% - 1rem);
+  }
+
+  /* ajuste del espacio interno padding */
+  .modal-body {
+    padding: 1rem 0.75rem;
+  }
+
+  /* ajuste para los botones del footer no se amontonen */
+  .modal-footer {
+    padding: 0.75rem;
+    flex-direction: column;
+  }
+  .modal-footer > button {
+    width: 100%;
+    margin: 0.25rem 0 !important;
+  }
+}
+
+#pendingUsersTable td {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  font-size: 0.85rem; /* Un pelín más pequeña la letra para que quepa más */
+}
+
+/* Estilos para los botones de la lista de productos */
+.btn {
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.btn-primary {
+  background-color: #0d6efd;
+  box-shadow: 0 4px 6px rgba(13, 110, 253, 0.15);
+}
+.btn-primary:hover {
+  background-color: #0b5ed7;
+  transform: translate(-1px);
+  box-shadow: 0 6px 12px 12px rgba(13, 110, 253, 0.25);
+}
+/* Botones de accion en tablas */
+.btn-action {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: #555;
+  border-radius: 6px;
+}
+.btn-action:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+  color: #222;
+}
+.stock-control {
+  background: #f8f9fa;
+  border-radius: 10px;
+  padding: 4px;
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid #e9ecef;
+}
+.btn-stock {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px !important;
+  background: white;
+  color: #0d6efd;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+.btn-stock:hover {
+  background: #0d6efd;
+  color: white;
+}
+
+@media (max-width: 768px) {
+  #activityLog li:nth-child(n + 4) {
+    display: none !important;
+  }
+}

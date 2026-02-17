@@ -1,0 +1,18 @@
+# Seguridad
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Dependencias (esta carpeta es pesadísima, no se sube)
+node_modules/
+
+# Archivos de compilación (lo que genera el build)
+dist/
+build/
+.cache/
+
+# Archivos del sistema
+.DS_Store
+thumbs.db

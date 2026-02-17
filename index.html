@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>StockPro | Sistema de Inventario</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+    />
+    <link rel="stylesheet" href="./src/css/style.css" />
+    <style>
+      body {
+          opacity: 0;
+          transition: opacity 0.4s ease-in-out;
+        }
+
+      body.auth-confirmed {
+           opacity: 1;
+        }
+    </style>
+  </head>
+
+  <body class="bg-light">
+    <div id="main-content" class="d-none" >
+      <!-- Codigo modificado -->
+     <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+      <div class="container-fluid">
+        <a class="navbar-brand mb-0 h1" href="#">
+          <i class="bi bi-box-seam me-2 text-info"></i>StockPro Manager
+        </a>
+
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="mainNavbar">
+          <div class="navbar-nav pb-2  pb-lg-0 ms-auto align-items-start align-items-lg-center gap-3 mt-3 mt-lg-0">
+            
+            <div class="d-flex align-items-center gap-2 border-lg-end pe-lg-3">
+              <i class="bi bi-person-circle text-info fs-4"></i>
+              <div class="d-flex flex-column">
+                <small class="text-info d-lg-none">Usuario:</small>
+                <span id="userEmail" class="text-light small fw-bold">Cargando...</span>
+              </div>
+            </div>
+
+            <div class="d-grid d-lg-flex flex-lg-row gap-2 w-100 w-lg-auto">
+              <button id="btnAdminPanel" class="btn btn-outline-info btn-sm d-none" data-bs-toggle="modal" data-bs-target="#adminModal">
+                <i class="bi bi-gear-fill me-2"></i>Panel de Control
+              </button>
+              
+              <button id="btnLogout" class="btn btn-outline-danger btn-sm" onclick="handleLogout()">
+                <i class="bi bi-box-arrow-right me-2"></i>Cerrar Sesión
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </nav>
+      <!-- fin -->
+
+
+<!-- 
+    <nav class="navbar navbar-dark bg-dark shadow-sm">
+      <div class="container-fluid">
+        <span class="navbar-brand mb-0 h1"
+          ><i class="bi bi-box-seam me-2"></i>StockPro Manager</span
+        >         
+        <div class="d-flex align-items-center gap-2 gap-md-3">
+          <div class="d-flex align-items-center gap-2 border-end pe-2 pe-md-3 d-none d-md-flex">
+            <i class="bi bi-person-circle text-light fs-4"></i>
+            <span id="userEmail" class="text-light small d-none d-sm-inline"></i>Cargando...</span> 
+          </div>                        
+          <button id="btnAdminPanel" class="btn btn-outline-light btn-sm d-none " data-bs-toggle="modal" data-bs-target="#adminModal">
+          <i class="bi bi-gear-fill me-2"></i>Panel de Control
+           </button>
+          <button id="btnLogout" class="btn btn-outline-danger btn-sm" onclick="handleLogout()"> Cerrar Sesión</button>
+        </div>
+      </div>
+    </nav> -->
+
+    <div class="container-fluid" id="dashboard-container">
+      <div class="row g-2 g-lg-4 h-100">
+        
+        <div class="col-lg-4 py-2 pt-lg-2">
+          <div class="card shadow-sm border-0">
+            <div class="card-body">
+              <h5 class="card-title mb-4" id="formTitle">Registrar Nuevo Producto</h5>
+              <form action="" id="productForm">
+                <div class="mb-3">
+                  <label for="" class="form-label">Nombre del Producto</label>
+                  <input type="text" id="name" class="form-control" placeholder="Ingresar" required />
+                </div>
+                <div class="mb-3">
+                  <label for="" class="form-label">Categoria</label>
+                  <select id="category" class="form-select">
+                    <option value="General">General</option>
+                    <option value="Electronica">Electronica</option>
+                    <option value="Alimentos">Alimentos</option>
+                    <option value="Limpieza">Limpieza</option>
+                  </select>
+
+                  <input type="text" class="form-control d-none mt-4 w-100" id="newCategory" placeholder="Escriba la nueva categoria">
+
+                  <div class="form-check mt-2">
+                    <input class="form-check-input" type="checkbox" id="toggleCategory">
+                    <label class="form-check-label small text-muted" for="toggleCategory">¿Nueva Categoria?</label>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-6 mb-3">
+                    <label for="stock" class="form-label small fw-bold text-muted">Stock</label>    
+                      <div class="input-group">
+                        <span class="input-group-text bg-light border-end-0 text-muted">
+                          <i class="bi bi-box-seam"></i>
+                        </span>
+                            <input
+                          type="number"
+                          min="0"
+                          id="stock"
+                          class="form-control"
+                          value="0"
+                        />
+                      </div>                                      
+                  </div>
+
+                  <div class="col-6 mb-3">
+                    <label for="price" class="form-label small fw-bold text-muted">Precio</label>
+                    <div class="input-group">
+                      <span class="input-group-text bg-light border-end-0 text-muted">
+                        <i class="bi bi-currency-dollar"></i>
+                      </span>
+                      <input
+                      type="number"
+                      min="0"
+                      id="price"
+                      step="0.01"
+                      class="form-control"
+                      value="0.00"
+                    />
+                    </div>
+                  </div>
+                </div>
+                <button
+                  type="submit"
+                  id="btnSubmit"
+                  class="btn btn-primary w-100"
+                >
+                  <span id="btnText">Guardar Producto</span>
+                  <span
+                    id="btnSpinner"
+                    class="spinner-border spinner-border-sm d-none"
+                  ></span>
+                </button>
+                <button
+                  type="button"
+                  id="btnCancel"
+                  onclick="resetForm()"
+                  class="btn btn-secondary d-none w-100 mt-2"
+                >
+                  Cancelar Edición
+                </button>
+              </form>
+            </div>                      
+          </div>
+
+            <div id="recentActivity">
+              <div class="card shadow-sm border-0 mt-3">                
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                          <h5 class="card-title mb-3">Actividad Reciente</h5>
+                          
+                          <button id="btnViewAllLogs" class="btn btn-sm btn-outline-dark d-none" data-bs-toggle="modal" data-bs-target="#auditModal">                            
+                            <i class="bi bi-clock-history me-2"></i>Auditoria</button>
+                        </div>
+                        
+                          <ul class="list-group list-group-flush small" id="activityLog">                          
+                          </ul>                      
+                    </div>
+                </div>
+            </div>
+              
+        </div>
+
+        <div class="col-lg-8 pt-0 pt-lg-3">
+          <div class="row g-4 mb-4">
+            <div class="col-md-6">
+              <div class="card h-100 border-0 shadow-sm bg-primary text-white position-relative overflow-hidden">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                      <h6 class="text-uppercase small opacity-75">Inversión Total</h6>
+                      <h3 id="totalValue" class="mb-0">$0.00</h3>
+                    </div>
+                    <i class="bi bi-currency-dollar fs-1 opacity-25"></i>
+                  </div>
+                </div>
+             </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card h-100 border-0 shadow-sm bg-warning text-dark position-relative overflow-hidden">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                      <h6 class="text-uppercase small opacity-75">Productos de bajo stock</h6>
+                     <h3 id="lowStockCount" class="mb-0">0</h3>
+                    </div>         
+                    <i class="bi bi-exclamation-circle fs-1 opacity-25"></i>           
+                  </div>                    
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label d-block text-muted small fw-bold">Filtrar por categoria</label>
+            <div class="d-flex flex-nowrap overflow-x-auto pb-2 gap-2" style="scrollbar-width: none; -ms-overflow-style: none;" role="group" id="filterGroup">
+              <button class="btn btn-outline-primary rounded-pill  flex-shrink-0" onclick="filterByCategory('Todas',event)">Todas</button>             
+            </div>
+          </div>
+
+          <div class="flex-column flex-md-row align-items-center mb-2">
+            <h4 class="mb-2 fw-bold">Lista de Productos</h4>
+            
+              <div class="d-flex flex-wrap justify-content-center w-100 gap-2 mb-3 overflow-auto py-1">
+
+                  <button class="btn btn-sm btn-dark rounded-pill px-3 " id="btnFilterAll" onclick="filterList('all')">
+                      Todos
+                  </button>
+                  <button class="btn btn-sm btn-outline-danger rounded-pill px-3" id="btnFilterLow" onclick="filterList('low')">
+                      Stock Bajo <span class="badge bg-danger text-white ms-1" id="badgeLowStock">0</span>
+                  </button>
+                  <button class="btn btn-sm btn-primary" onclick="clearAllFilters()">
+                      <i class="bi bi-arrow-counterclockwise"></i><span class="d-none d-sm-inline">Limpiar</span> 
+                  </button>
+                  <button class="btn btn-sm btn-outline-danger d-flex ms-md-auto" onclick="generateLowStockReport()">
+                  <i class="bi bi-file-earmark-pdf me-2"></i>Reporte de Bajo Stock</button>
+
+              </div>
+
+              
+          </div>
+          <div class="card shadow-sm border-0 card-scroll-container ">
+            <div class="card-header bg-white py-3">
+                <div class="input-group">                
+                    <span class="input-group-text bg-light border-0">
+                        <i class="bi bi-search"></i></span>
+                    <input type="text" id="searchInput" class="form-control bg-light border-0" placeholder="Buscar por nombre o categoría..." oninput="handleSearch(event)">
+                </div>
+              </div>
+              <div class="card-body p-0 scrollable-content">
+                  <ul id="inventoryList" class="list-group list-group-flush"></ul>
+              </div>              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="auditModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"> 
+      <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content"> <div class="modal-header bg-light text-dark">
+            <h5 class="modal-title">Registro de Auditoría</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="d-flex justify-content-center mb-1 mt-3 px-3">
+            <div class="btn-group w-100 gap-2" role="group">
+              
+              <input type="radio" class="btn-check" name="filterAction" id="btnTodos" autocomplete="off" checked onclick="filterByAction('TODOS')">
+              <label class="btn btn-outline-secondary rounded-pill" for="btnTodos">Todos</label>
+
+              <input type="radio" class="btn-check" name="filterAction" id="btnCrear" autocomplete="off" onclick="filterByAction('CREAR')">
+              <label class="btn btn-outline-success rounded-pill" for="btnCrear">Creados</label>
+
+              <input type="radio" class="btn-check" name="filterAction" id="btnEditar" autocomplete="off" onclick="filterByAction('EDITAR')">
+              <label class="btn btn-outline-warning rounded-pill" for="btnEditar">Editados</label>
+
+              <input type="radio" class="btn-check" name="filterAction" id="btnEliminar" autocomplete="off" onclick="filterByAction('ELIMINAR')">
+              <label class="btn btn-outline-danger rounded-pill" for="btnEliminar">Eliminados</label>
+              
+            </div>
+          </div>
+
+          <div class="modal-body">
+            <div class="input-group mb-3">
+              <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+              <input type="text" id="auditSearch" class="form-control" 
+                    placeholder="Buscar por email o producto..." onkeyup="filterAuditTable()">
+            </div>
+
+            <div class="table-responsive" style="border: none;">
+              <table class="table table-hover table-striped">
+                <thead class="table-light">
+                  <tr>
+                    <th>Fecha</th>
+                    <th>Usuario</th>
+                    <th>Acción</th>
+                    <th>Producto</th>
+                  </tr>
+                </thead>
+                <tbody id="auditTableBody">
+                  </tbody>
+              </table>
+            </div>
+          </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+
+    </div> </div> </div>
+
+<div class="modal fade" id="adminModal" aria-labelledby="adminModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-body">        
+        
+        <div class="d-flex justify-content-end align-items-start">
+          <button type="button" class="btn-close ms-2 mt-2" data-bs-dismiss="modal" aria-label="Close"></button>          
+        </div>
+
+        <ul class="nav nav-tabs mb-3">          
+            <li class="nav-item">
+              <button type="button" class="nav-link active" data-bs-toggle="tab" data-bs-target="#paneUsers">Aprobación</button>
+            </li>
+            <li class="nav-item">
+              <button type="button" class="nav-link" data-bs-toggle="tab" data-bs-target="#paneCategories">Categorías</button>
+            </li>            
+          </ul>
+        
+        
+        <div class="tab-content">
+          
+          <div class="tab-pane fade show active" id="paneUsers" role="tabpanel">
+            <div class="table-responsive" style="border: none;">
+              <table class="table table-hover">
+                <thead class="table-light">
+                  <tr>
+                    <th>Email</th><th>Rol</th><th class="text-center">Acción</th>
+                  </tr>
+                </thead>
+                <tbody id="pendingUsersTable"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="tab-pane fade" id="paneCategories" role="tabpanel">
+            <div class="table-responsive" style="border: none;">
+              <table class="table table-hover align-middle">
+                <thead class="table-light">
+                  <tr>
+                    <th>Nombre</th><th>Prod.</th><th class="text-end">Inversión</th><th class="text-center">Acción</th>
+                  </tr>
+                </thead>
+                <tbody id="categoryManegementTab"></tbody>
+              </table>
+            </div>
+          </div>
+
+        </div> </div> </div>
+  </div>
+</div>
+
+      <div id="waiting-area" class="vh-100 d-flex flex-column justify-content-center align-items-center">
+        <div class="card w-50 text-center">
+          <div class="card-body">
+            <h3 class="card-title">Cuenta en revisión</h3>
+            <p class="card-text">Esperando activacion del administador.</p>
+            <a href="#" class="btn btn-outline-danger" onclick="handleLogout()">Cerrar Sesión</a>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  
+    <script type="module" src="./src/js/main.js"></script>
+  </body>
+</html>
