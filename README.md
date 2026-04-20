@@ -7,7 +7,7 @@
 
 Stockpro Manager es mi **Proyecto Fundacional**. Fue construido deliberadamente utilizando **Vanilla JavaScript (sin frameworks)** con el objetivo de dominar los fundamentos de la web: manipulación directa del DOM, manejo de estado nativo y consumo asíncrono de APIs antes de transicionar a librerías modernas como React.
 
-**[Visita el proyecto en vivo aquí](#)** ---
+**[Visita el proyecto en vivo aquí](https://stockpromanagerv1.netlify.app/login.html)** ---
 
 ## Propósito del proyecto
 
